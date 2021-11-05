@@ -1,0 +1,24 @@
+{
+  "name": "neo-krs-scrapper",
+  "version": "1.0.0",
+  "description": "Utility to scrap neoKRS list from KOD website",
+  "main": "fetch-all-referees.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bogumilbierc/firefox-neo-krs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bogumilbierc/firefox-neo-krs/issues"
+  },
+  "homepage": "https://github.com/bogumilbierc/firefox-neo-krs#readme",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "cheerio": "^1.0.0-rc.10",
+    "node-html-parser": "^5.1.0"
+  }
+}

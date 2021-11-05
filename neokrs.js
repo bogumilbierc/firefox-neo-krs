@@ -4,18 +4,18 @@ document.body.style.border = "5px solid red";
 
 let currentLocation = window.location.toString();
 
-function checkLocationChange() {
+async function checkLocationChange() {
   const newLocation = window.location.toString();
   if (newLocation !== currentLocation) {
     console.info('Location has changed - trying to perform neoKRS logic');
     currentLocation = newLocation;
-    neoKrs();
+    await neoKrs();
   } else {
     console.debug('Location has not changed');
   }
 }
 
-function neoKrs() {
+async function neoKrs() {
   if (!isOnCaseDetailsPage()) {
     return;
   }
@@ -27,6 +27,7 @@ function neoKrs() {
   const refereeName = currentRefereeElement.textContent;
   console.log(`Current referee: ${refereeName}`)
   markRefereeAsInProcessing(currentRefereeElement, refereeName);
+  const isOnKrsList = await checkIfRefereeIsInNeoKrs(refereeName);
 
 }
 
@@ -101,6 +102,26 @@ function getRefereeElementFromRow(lawsuitElement) {
  */
 function markRefereeAsInProcessing(refereeElement, refereeName) {
   refereeElement.textContent = `${refereeName} --- Sprawdzanie w bazie NeoKRS`
+}
+
+/**
+ * Checks if passed referee is on list of NeoKRS refeerees
+ * @param {string} refereeName
+ * @returns {Promise<boolean>}
+ */
+async function checkIfRefereeIsInNeoKrs(refereeName) {
+
+  const url = 'https://edustaz.pl/api/anonymous/landing-page/offers';
+
+  // const data = new FormData();
+  // data.append('nazwisko', refereeName);
+
+  return fetch(url, {
+    method: 'get',
+    // body: data,
+    mode: 'cors'
+  });
+
 }
 
 if (isOnCaseDetailsPage()) {
