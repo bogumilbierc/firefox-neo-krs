@@ -19,12 +19,15 @@ function neoKrs() {
   if (!isOnCaseDetailsPage()) {
     return;
   }
-  const currentReferee = getRefereeFromCurrentCase();
-  console.log(`Current referee: ${currentReferee}`)
-  if (!currentReferee) {
+  const currentRefereeElement = getRefereeElementFromCurrentCase();
+  if (!currentRefereeElement) {
     console.error('Cannot extract referee!')
     return;
   }
+  const refereeName = currentRefereeElement.textContent;
+  console.log(`Current referee: ${refereeName}`)
+  markRefereeAsInProcessing(currentRefereeElement, refereeName);
+
 }
 
 /**
@@ -40,15 +43,15 @@ function isOnCaseDetailsPage() {
 
 /**
  * Gets referee name from current page/case
- * @returns {string | null}
+ * @returns {HTMLElement}
  */
-function getRefereeFromCurrentCase() {
+function getRefereeElementFromCurrentCase() {
   const lawsuitMainDataElements = document.querySelectorAll(
       '.row.lawsuit-main-data.submain');
 
   for (const lawsuitElement of lawsuitMainDataElements) {
     if (isARefereeRow(lawsuitElement)) {
-      return getRefereeFromRow(lawsuitElement);
+      return getRefereeElementFromRow(lawsuitElement);
     }
   }
 }
@@ -73,9 +76,9 @@ function isARefereeRow(lawsuitElement) {
 /**
  * Gets referee name from current row
  * @param {HTMLElement} lawsuitElement
- * @returns {string | null}
+ * @returns {HTMLElement | null}
  */
-function getRefereeFromRow(lawsuitElement) {
+function getRefereeElementFromRow(lawsuitElement) {
   const nameElement = lawsuitElement.querySelector('.col-md-9');
   if (!nameElement) {
     return null;
@@ -88,7 +91,19 @@ function getRefereeFromRow(lawsuitElement) {
   if (!trimmed) {
     return null;
   }
-  return trimmed;
+  return nameElement;
 }
 
+/**
+ * Marks referee HTML element as in processing
+ * @param {HTMLElement} refereeElement - element containing referee name text
+ * @param {string} refereeName - name of the referee
+ */
+function markRefereeAsInProcessing(refereeElement, refereeName) {
+  refereeElement.textContent = `${refereeName} --- Sprawdzanie w bazie NeoKRS`
+}
+
+if (isOnCaseDetailsPage()) {
+  neoKrs();
+}
 window.setInterval(checkLocationChange, 500)
