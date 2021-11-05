@@ -24,7 +24,8 @@ async function getCourts(cities) {
   const courts = []
 
   for (const city of cities) {
-    const courtsForCity = await new CourtsService().getCourtsForCity(city);
+    const courtsForCity = await new CourtsService().getCourtsForCity(city,
+        kodWebsiteUrl);
     courts.push(...courtsForCity)
   }
 
