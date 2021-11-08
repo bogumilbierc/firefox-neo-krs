@@ -8,8 +8,7 @@
     "start": "node ./build/fetch-all-referees.js",
     "pretest": "npm run build",
     "test": "jest",
-    "prebuild": "rimraf build",
-    "build": "tsc --project ./"
+    "build": "rimraf build && tsc --project ./"
   },
   "repository": {
     "type": "git",
