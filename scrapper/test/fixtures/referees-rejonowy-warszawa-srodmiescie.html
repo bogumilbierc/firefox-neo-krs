@@ -1,0 +1,1046 @@
+
+<script>
+
+  var submenu_visible = Array();
+
+  function in_array(needle, haystack){
+    var found = 0;
+    for (var i=0, len=haystack.length;i<len;i++)
+      if (haystack[i] == needle) return i;
+    return -1;
+  }
+
+  function killChildren(submenu = null){
+    var idx = in_array(submenu, submenu_visible);
+    var len = submenu_visible.length;
+    for(i=idx+1; i<len; i++)
+      submenu_visible.pop().style.visibility = "hidden";
+  }
+
+  function getParent(id){
+    var arr = id.split(".");
+    arr.pop();
+    return arr.join(".");
+  }
+
+  function popup(id, mode){
+    var submenu = document.getElementById('s' + id);
+    var element = document.getElementById(id);
+    var clear = submenu.style.visibility == "visible";
+    var parent = document.getElementById('s' + getParent(id));
+    killChildren(parent);
+    if(clear) return;
+    if(parent)
+      var offset = parent.getBoundingClientRect();
+    var rect = element.getBoundingClientRect();
+
+    if(mode=="top")
+      submenu.style.left = rect.left;
+    else{
+      submenu.style.position = "absolute";
+      submenu.style.left = (rect.right - offset.left) + "px";// - rect.left;
+      submenu.style.top = (rect.top  - offset.top)+ "px"; //rect.bottom +40;
+    }
+    submenu.style.visibility = "visible";
+    submenu_visible.push(submenu);
+  }
+</script>
+
+<style>
+    :root {
+        --kolor_logo: #ff9400;
+    }
+
+    *{
+        font-family: Open Sans, Trebuchet MS, Helvetica, sans-serif;
+    }
+
+    html{
+        scroll-behavior: smooth;
+    }
+
+    body{
+        background:white;
+        margin:auto;
+    }
+
+    #header{
+        min-height:75px;
+        background:white;
+    }
+
+    #logo{
+        float:left;
+        background: var(--kolor_logo) url("/neokrs/img/logo.png") 0 0 no-repeat;
+        background-size: cover;
+        z-index:100; !important
+    margin-right:50px;
+        margin-top:30px;
+        width:180px;
+        height:90px;
+        margin-right:50px;
+        background-position: -10 0;
+    }
+
+    #menubar{
+        margin:auto;
+        width:1200px;
+        text-align:left;
+        min-height:70px;
+
+    }
+
+    #menubar a{
+        text-decoration:none;
+        color:black;
+    }
+
+    #menu, #bottom-menu{
+        padding:20px;
+        background:white;
+        line-height:2;
+        visibility:visible;
+    }
+
+    #bottom-menu{
+        background:none;
+    }
+
+    #menu a, #bottom-menu a{
+        text-decoration:none;
+        color:black;
+        background:white;
+        font-weight:bold;
+        padding:10px;
+        font-size:12pt;
+        text-transform:uppercase;
+    }
+    #bottom-menu a{
+        background:none;
+    }
+
+    #menu a:hover,  #bottom-menu a:hover{
+        background:var(--kolor_logo);
+        color:white;
+    }
+
+    #bottom-menu{
+        text-align:center;
+        padding:10px;
+        border: none;
+    }
+
+    @keyframes open {
+        from {padding-top:100%;}
+        to {padding-top:120;}
+    }
+
+    #temida{
+        background:black url("/neokrs/img/tlo_wyszukiwarka.png") 0 0 no-repeat;
+        padding-top:120px;
+        padding-bottom:50px;
+        background-size: cover;
+        background-position: center -50;
+
+    }
+
+    #search{
+        margin:auto;
+        color:white;
+        text-align:center;
+        padding:10px;
+        width:600px;
+    }
+
+    #search h1{
+        text-align:center;
+        font-weight:normal;
+        text-transform:uppercase;
+        font-size:28pt;
+    }
+
+    #search form{
+        text-align:center;
+        display:block;
+    }
+
+    #search input[type=text]{
+        text-align:center;
+        border:1px solid white;
+        height:40px;
+        width:90%;
+        font-size:120%;
+    }
+    #search input[type=submit]{
+        background: var(--kolor_logo) url("/neokrs/img/lupa.png") 0 0 no-repeat;
+        background-size:cover;
+        background-position:center;
+        color:transparent;
+        cursor:pointer;
+        border:none;
+        width:10%;
+        height:65px;
+    }
+
+    #content{
+        padding:1%;
+        width:800px;
+    }
+
+    #content{
+        display:block;
+        margin:auto;
+        color:black;
+        line-height: 1.5;
+        border:none;
+        padding:60px;
+        text-align:justify;
+    }
+
+    #content h1{
+        font-weight:normal;
+    }
+
+    #content table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        color:black;
+    }
+
+    #content td, #content th {
+        border: none;
+        padding: 8px;
+    }
+
+    #content tr:nth-child(even){background-color: white;}
+    #content tr:nth-child(odd){background-color: #f1f1f1;}
+
+    #content th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        font-weight:normal;
+        text-transform:uppercase;
+    }
+
+    #content td{
+        font-weight:bold;
+    }
+
+    #content a, #footer a{
+        text-decoration:none;
+        font-weight:bold;
+        color:var(--kolor_logo);
+    }
+
+    #content ol{
+        text-transform:uppercase;
+        font-weight:bold;
+        line-height:1.5;
+    }
+
+    #content li{
+        padding:5pt;
+    }
+
+    /*    tr.active{
+            cursor:pointer;
+        }
+
+        tr.active:hover {
+            color:white;
+            background-color:var(--kolor_logo);
+        }
+
+        th.active {
+            cursor:default;
+            background:#f1f1f1;
+            color:black;
+        }
+
+        td.active{
+            font-weight:bold;
+        }*/
+
+    #suplement{
+        margin:20px 0px;
+    }
+
+    #suplement a{
+        display:block;
+        font-size:10pt;
+        font-weight:bold;
+        text-decoration:none;
+        padding:10px 10px;
+        min-height:30px;
+        background: var(--kolor_logo) url("/neokrs/img/wykrzyknik.png") 0 0 no-repeat;
+        color:white;
+        padding-left:100px;
+        background-size: contain;
+        background-position:0 0;
+    }
+
+    #suplement a:after{
+        content:' »';
+        font-size:150%;
+    }
+    #footer{
+        /*      background: url("/neokrs/img/logo_stopka.png") 0 0 no-repeat; */
+        margin:auto;
+        margin-top:10px;
+        margin-bottom:10px;
+        /*     color:var(--kolor_logo); */
+        /*     font-weight:bold; */
+        /*     text-align:left; */
+        /*     padding-left:100px; */
+        /*      font-size:10pt; */
+        width:60%;
+        height:150px;
+    }
+
+    #kod{
+        background: url("/neokrs/img/logo_stopka.png") 0 0 no-repeat;
+        color:var(--kolor_logo);
+        font-weight:bold;
+        text-align:left;
+        padding-left:100px;
+        font-size:10pt;
+        float:left;
+    }
+
+    #kod a{
+        color:var(--kolor_logo);
+        /*        margin-top:20px; */
+    }
+
+    #fo{
+        float:right;
+        margin-top:0px;
+        text-align:center;
+        width:auto;
+    }
+
+    important{
+        display:block;
+        font-weight:bold;
+        margin:10px 0px;
+        text-align:inherit;
+        text-transform:uppercase;
+    }
+
+    uppercase{
+        display:block;
+        text-align:inherit;
+        text-transform:uppercase;
+    }
+
+    watermark{
+        display:block;
+        margin:-80px;
+        padding:0;
+        font-size:300px;
+        font-weight:900;
+        color:#f1f1f1;
+        position:absolute;
+        z-index:-1;
+    }
+
+    remark{
+        color:gray;
+        font-size:8pt;
+    }
+
+    #active tr {
+        cursor:pointer;
+    }
+
+    #active tr:hover {
+        background-color:var(--kolor_logo);
+        color:white;
+    }
+
+    #active th{
+        cursor:default;
+        background:#f1f1f1;
+        color:black;
+    }
+
+    #active td{
+        font-weight:bold;
+    }
+    aktualizacja{
+        display:block;
+        background:#f1f1f1;
+        font-size:8pt;
+        padding:5px;
+        margin-top:20px;
+    }
+
+    /*
+    aktualizacja:before{
+     content:'Aktualizacja: ';
+    }
+    */
+    #bars{
+        display:block;
+        visibility:hidden;
+        position:absolute;
+        top:10px;
+        right:10px;
+        width:50px;
+        height:50px;
+        float:right;
+        padding:10px;
+        /*     background:white; */
+    }
+
+    .menu-bar{
+        padding:auto;
+        text-align:center;
+    }
+
+    .menu-button{
+        display:block;
+        min-width:80%;
+        background:black;
+        color:white;
+        padding:10px;
+        margin:auto;
+        text-decoration:none;
+        text-align:center;
+        border:1px solid white;
+    }
+
+    .menu-button:focus{
+        background:var(--kolor_logo);
+    }
+
+    .menu-button:hover{
+        background:var(--kolor_logo);
+    }
+    .menu-button:after{
+        float:right;
+        content: '▽';
+    }
+
+    .sub-menu{
+        position:absolute;
+        left:0px;
+        width:auto;
+        background:black;
+        color:white;
+        padding:5px;
+        visibility:hidden;
+        opacity:95%;
+        text-align:left;
+    }
+
+    .submenu-item, .submenu-item-link{
+        display:block;
+        color:white;
+        text-decoration:none;
+        padding:5px;
+        margin:2px;
+        cursor:pointer;
+        opacity:100%;
+    }
+
+    .submenu-item:hover, .submenu-item-link:hover{
+        background:var(--kolor_logo);
+        color:white;
+    }
+
+    .submenu-item:focus, .submenu-item-link:focus{
+        background:var(--kolor_logo);
+        color:white;
+    }
+
+    .submenu-item:after{
+        float:right;
+        content: '▶';
+        font-size:50%;
+    }
+
+    @media only screen and (max-width: 1000px) {
+        #logo{
+            margin-top:10px;
+            width:150px;
+            height:75px;
+            margin-right:0px;
+        }
+
+        #menubar{
+            margin-top:15px;
+            margin-left:20px;
+            text-align:right;
+            width:auto;
+        }
+
+        #menu{
+            text-align:left;
+            position:absolute;
+            top:100px;
+            right:0px;
+            visibility:hidden;
+            border:1px solid gray;
+        }
+        #menu a{
+            display:block;
+            /*         width:150px; */
+        }
+
+        #bottom-menu{
+            line-height:3;
+        }
+        #bars{
+            visibility:visible;
+            margin-left:0px;
+        }
+        @keyframes open {
+            from {padding-top:100%;}
+            to {padding-top:100;}
+        }
+
+
+        #temida{
+            background:black url("/neokrs/img/tlo_wyszukiwarka.png") 0 0 no-repeat;
+            padding-bottom:50px;
+            padding-top:100px;
+            background-size:content;
+            /*     background-position: -800px -100px; */
+            background-position: center -100px;
+        }
+
+        #search{
+            width:auto;
+        }
+
+        #search h1{
+            font-size:160%;
+        }
+
+
+        #search input[type=text]{
+            width:80%;
+            font-size:110%;
+        }
+
+        #search input[type=submit]{
+            /*       width:20%; */
+            /*       height:auto; */
+            width:50px;
+            height:50px;
+        }
+
+        #content, #suplement{
+            width:auto;
+        }
+
+        #content{
+            padding:10px;
+            text-align:left;
+        }
+
+        #content h1{
+            font-weight:normal;
+        }
+
+
+        #footer{
+            /*     padding-left:80px; */
+            /*     background-size: auto 100%; */
+            font-size:8pt;
+        }
+
+        #kod{
+            margin:auto;
+            width:100%;
+        }
+        #fo{
+            width:100%;
+            float:none;
+            margin:auto;
+        }
+
+        watermark{
+            margin-left:0px;
+            margin-top:-80px;
+        }
+
+        #suplement a{
+            font-size:8pt;
+        }
+        .menu-button{
+            /*     width:auto; */
+            font-size:90%;
+            margin:10px;
+        }
+
+
+    }
+
+    .langs{
+        position:absolute;
+        text-align:right;
+        width:100%;
+        top:0;
+        left:0;
+        /*     margin:10px; */
+    }
+    .langs img{
+        margin:2px;
+        width:30px;
+        border:grey solid 1px;
+    }
+
+    #copyright{
+        text-align:center;
+        margin-top:40px;
+    }
+
+</style>
+
+<html>
+<head>
+  <title>neoKRS |Wyszukiwarka neo-sędziów</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <meta content="Wyszukiwarka<br>sędziów powołanych przez neo-KRS">
+  <meta name="copyright" content="Komitet Obrony Demokracji" />
+  <meta name="author" content="M. Michalska, P. Pawłowski et al." />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VN435029HY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-VN435029HY');
+  </script>
+</head>
+<body
+    onclick='killChildren()'  <div id="header">
+  <div id="menubar">
+    <a href="https://ruchkod.pl" title="Komitet Obrony Demokracji - Strona Główna"><div id="logo"></div></a>
+    <a id="bars" href="javascript:switch_menu()"><i class="fa fa-bars" style="font-size:300%; margin:10px"></i></a>
+    <div id="menu">
+      <!--        <a title="Start" href="#top"><i class="fa fa-home"></i></a>-->
+      <a title="Wyszukiwanie" href="javascript:goToSearch()"><i class="fa fa-search"></i></a>
+      <a title="Informacja" href="?view=informacja">Informacja</a>
+      <a title="Co robić...?" href="?view=co_robic">Co&nbsp;Robić...?</a>
+      <a title="Podstawy prawne" href="?view=podstawy_prawne">Podstawy&nbsp;prawne</a>
+      <a title="Pomóż w akcji" href="?view=pomoc">Pomóż&nbsp;w&nbsp;akcji</a>
+      <a title="Wsparcie" href="?view=wsparcie">Wsparcie</a>
+      <a title="Kontakt" href="?view=kontakt">Kontakt</a>
+    </div>
+  </div>
+</div>
+<div class="langs">
+  <a title='Polski' href='/neokrs/pl'><img src='/neokrs/lang/pl/flag.png'></a><a title='English' href='/neokrs/en'><img src='/neokrs/lang/en/flag.png'></a><a title='Français' href='/neokrs/fr'><img src='/neokrs/lang/fr/flag.png'></a><a title='Deutch' href='/neokrs/de'><img src='/neokrs/lang/de/flag.png'></a>    </div>
+
+<div id="temida">
+  <div id="search">
+    <h1> Wyszukiwarka<br>sędziów powołanych przez neo-KRS</h1>
+    <form method="post" action='?'>
+      <!--     <div style="min-width:80%; height:100px"> -->
+      <input type='text' id="search_input" name='nazwisko' placeholder='wpisz nazwisko szukanej osoby'><input type='submit' title='Szukaj' value='Szukaj'>
+      <!--     </div> -->
+    </form><important>LUB</important>
+    <div id='menu-bar' class='menu-bar'>
+      <a id='1' class='menu-button' href='javascript:popup("1","top")'>znajdź sąd, który prowadzi Twoją sprawę</a>
+      <div id='s1' class='sub-menu'>
+        <a id='1.1' class='submenu-item' onmouseover='javascript:popup("1.1","left")'>dolnośląskie</a>
+        <div id='s1.1' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Bolesławiec'>Bolesławiec</a>
+          <a class='submenu-item-link' href='?miasto=Dzierżoniów'>Dzierżoniów</a>
+          <a class='submenu-item-link' href='?miasto=Głogów'>Głogów</a>
+          <a class='submenu-item-link' href='?miasto=Jelenia Góra'>Jelenia Góra</a>
+          <a class='submenu-item-link' href='?miasto=Kamienna Góra'>Kamienna Góra</a>
+          <a class='submenu-item-link' href='?miasto=Kłodzko'>Kłodzko</a>
+          <a class='submenu-item-link' href='?miasto=Legnica'>Legnica</a>
+          <a class='submenu-item-link' href='?miasto=Lubań'>Lubań</a>
+          <a class='submenu-item-link' href='?miasto=Lubin'>Lubin</a>
+          <a class='submenu-item-link' href='?miasto=Lwówek Śląski'>Lwówek Śląski</a>
+          <a class='submenu-item-link' href='?miasto=Milicz'>Milicz</a>
+          <a class='submenu-item-link' href='?miasto=Oleśnica'>Oleśnica</a>
+          <a class='submenu-item-link' href='?miasto=Oława'>Oława</a>
+          <a class='submenu-item-link' href='?miasto=Strzelin'>Strzelin</a>
+          <a class='submenu-item-link' href='?miasto=Środa Śląska'>Środa Śląska</a>
+          <a class='submenu-item-link' href='?miasto=Świdnica'>Świdnica</a>
+          <a class='submenu-item-link' href='?miasto=Trzebnica'>Trzebnica</a>
+          <a class='submenu-item-link' href='?miasto=Wałbrzych'>Wałbrzych</a>
+          <a class='submenu-item-link' href='?miasto=Wrocław'>Wrocław</a>
+          <a class='submenu-item-link' href='?miasto=Zgorzelec'>Zgorzelec</a>
+          <a class='submenu-item-link' href='?miasto=Złotoryja'>Złotoryja</a>
+        </div>
+        <a id='1.2' class='submenu-item' onmouseover='javascript:popup("1.2","left")'>kujawsko-pomorskie</a>
+        <div id='s1.2' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Aleksandrów Kujawski'>Aleksandrów Kujawski</a>
+          <a class='submenu-item-link' href='?miasto=Brodnica'>Brodnica</a>
+          <a class='submenu-item-link' href='?miasto=Bydgoszcz'>Bydgoszcz</a>
+          <a class='submenu-item-link' href='?miasto=Chełmno'>Chełmno</a>
+          <a class='submenu-item-link' href='?miasto=Grudziądz'>Grudziądz</a>
+          <a class='submenu-item-link' href='?miasto=Inowrocław'>Inowrocław</a>
+          <a class='submenu-item-link' href='?miasto=Radziejów'>Radziejów</a>
+          <a class='submenu-item-link' href='?miasto=Rypin'>Rypin</a>
+          <a class='submenu-item-link' href='?miasto=Szubin'>Szubin</a>
+          <a class='submenu-item-link' href='?miasto=Świecie'>Świecie</a>
+          <a class='submenu-item-link' href='?miasto=Toruń'>Toruń</a>
+          <a class='submenu-item-link' href='?miasto=Tuchola'>Tuchola</a>
+          <a class='submenu-item-link' href='?miasto=Włocławek'>Włocławek</a>
+          <a class='submenu-item-link' href='?miasto=Żnin'>Żnin</a>
+        </div>
+        <a id='1.3' class='submenu-item' onmouseover='javascript:popup("1.3","left")'>lubelskie</a>
+        <div id='s1.3' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Biała Podlaska'>Biała Podlaska</a>
+          <a class='submenu-item-link' href='?miasto=Chełm'>Chełm</a>
+          <a class='submenu-item-link' href='?miasto=Hrubieszów'>Hrubieszów</a>
+          <a class='submenu-item-link' href='?miasto=Janów Lubelski'>Janów Lubelski</a>
+          <a class='submenu-item-link' href='?miasto=Krasnystaw'>Krasnystaw</a>
+          <a class='submenu-item-link' href='?miasto=Kraśnik'>Kraśnik</a>
+          <a class='submenu-item-link' href='?miasto=Lublin'>Lublin</a>
+          <a class='submenu-item-link' href='?miasto=Łuków'>Łuków</a>
+          <a class='submenu-item-link' href='?miasto=Opole Lubelskie'>Opole Lubelskie</a>
+          <a class='submenu-item-link' href='?miasto=Puławy'>Puławy</a>
+          <a class='submenu-item-link' href='?miasto=Radzyń Podlaski'>Radzyń Podlaski</a>
+          <a class='submenu-item-link' href='?miasto=Świdnik'>Świdnik</a>
+          <a class='submenu-item-link' href='?miasto=Włodawa'>Włodawa</a>
+          <a class='submenu-item-link' href='?miasto=Zamość'>Zamość</a>
+        </div>
+        <a id='1.4' class='submenu-item' onmouseover='javascript:popup("1.4","left")'>lubuskie</a>
+        <div id='s1.4' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Gorzów Wielkopolski'>Gorzów Wielkopolski</a>
+          <a class='submenu-item-link' href='?miasto=Krosno Odrzańskie'>Krosno Odrzańskie</a>
+          <a class='submenu-item-link' href='?miasto=Międzyrzecz'>Międzyrzecz</a>
+          <a class='submenu-item-link' href='?miasto=Nowa Sól'>Nowa Sól</a>
+          <a class='submenu-item-link' href='?miasto=Sierpc'>Sierpc</a>
+          <a class='submenu-item-link' href='?miasto=Słubice'>Słubice</a>
+          <a class='submenu-item-link' href='?miasto=Strzelce Krajeńskie'>Strzelce Krajeńskie</a>
+          <a class='submenu-item-link' href='?miasto=Wschowa'>Wschowa</a>
+          <a class='submenu-item-link' href='?miasto=Zielona Góra'>Zielona Góra</a>
+          <a class='submenu-item-link' href='?miasto=Żagań'>Żagań</a>
+          <a class='submenu-item-link' href='?miasto=Żary'>Żary</a>
+        </div>
+        <a id='1.5' class='submenu-item' onmouseover='javascript:popup("1.5","left")'>łódzkie</a>
+        <div id='s1.5' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Brzeziny'>Brzeziny</a>
+          <a class='submenu-item-link' href='?miasto=Łask'>Łask</a>
+          <a class='submenu-item-link' href='?miasto=Łowicz'>Łowicz</a>
+          <a class='submenu-item-link' href='?miasto=Łódź'>Łódź</a>
+          <a class='submenu-item-link' href='?miasto=Opoczno'>Opoczno</a>
+          <a class='submenu-item-link' href='?miasto=Pabianice'>Pabianice</a>
+          <a class='submenu-item-link' href='?miasto=Piotrków Trybunalski'>Piotrków Trybunalski</a>
+          <a class='submenu-item-link' href='?miasto=Sieradz'>Sieradz</a>
+          <a class='submenu-item-link' href='?miasto=Skierniewice'>Skierniewice</a>
+          <a class='submenu-item-link' href='?miasto=Zduńska Wola'>Zduńska Wola</a>
+          <a class='submenu-item-link' href='?miasto=Zgierz'>Zgierz</a>
+        </div>
+        <a id='1.6' class='submenu-item' onmouseover='javascript:popup("1.6","left")'>małopolskie</a>
+        <div id='s1.6' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Bochnia'>Bochnia</a>
+          <a class='submenu-item-link' href='?miasto=Chrzanów'>Chrzanów</a>
+          <a class='submenu-item-link' href='?miasto=Gorlice'>Gorlice</a>
+          <a class='submenu-item-link' href='?miasto=Kraków'>Kraków</a>
+          <a class='submenu-item-link' href='?miasto=Limanowa'>Limanowa</a>
+          <a class='submenu-item-link' href='?miasto=Miechów'>Miechów</a>
+          <a class='submenu-item-link' href='?miasto=Myślenice'>Myślenice</a>
+          <a class='submenu-item-link' href='?miasto=Nowy Sącz'>Nowy Sącz</a>
+          <a class='submenu-item-link' href='?miasto=Nowy Targ'>Nowy Targ</a>
+          <a class='submenu-item-link' href='?miasto=Olkusz'>Olkusz</a>
+          <a class='submenu-item-link' href='?miasto=Oświęcim'>Oświęcim</a>
+          <a class='submenu-item-link' href='?miasto=Sucha Beskidzka'>Sucha Beskidzka</a>
+          <a class='submenu-item-link' href='?miasto=Tarnów'>Tarnów</a>
+          <a class='submenu-item-link' href='?miasto=Wadowice'>Wadowice</a>
+          <a class='submenu-item-link' href='?miasto=Wieliczka'>Wieliczka</a>
+          <a class='submenu-item-link' href='?miasto=Zakopane'>Zakopane</a>
+        </div>
+        <a id='1.7' class='submenu-item' onmouseover='javascript:popup("1.7","left")'>mazowieckie</a>
+        <div id='s1.7' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Ciechanów'>Ciechanów</a>
+          <a class='submenu-item-link' href='?miasto=Garwolin'>Garwolin</a>
+          <a class='submenu-item-link' href='?miasto=Gostynin'>Gostynin</a>
+          <a class='submenu-item-link' href='?miasto=Grodzisk Mazowiecki'>Grodzisk Mazowiecki</a>
+          <a class='submenu-item-link' href='?miasto=Grójec'>Grójec</a>
+          <a class='submenu-item-link' href='?miasto=Kozienice'>Kozienice</a>
+          <a class='submenu-item-link' href='?miasto=Legionowo'>Legionowo</a>
+          <a class='submenu-item-link' href='?miasto=Mińsk Mazowiecki'>Mińsk Mazowiecki</a>
+          <a class='submenu-item-link' href='?miasto=Mława'>Mława</a>
+          <a class='submenu-item-link' href='?miasto=Ostrołęka'>Ostrołęka</a>
+          <a class='submenu-item-link' href='?miasto=Ostrów Mazowiecki'>Ostrów Mazowiecki</a>
+          <a class='submenu-item-link' href='?miasto=Otwock'>Otwock</a>
+          <a class='submenu-item-link' href='?miasto=Płock'>Płock</a>
+          <a class='submenu-item-link' href='?miasto=Płońsk'>Płońsk</a>
+          <a class='submenu-item-link' href='?miasto=Pruszków'>Pruszków</a>
+          <a class='submenu-item-link' href='?miasto=Przasnysz'>Przasnysz</a>
+          <a class='submenu-item-link' href='?miasto=Pułtusk'>Pułtusk</a>
+          <a class='submenu-item-link' href='?miasto=Radom'>Radom</a>
+          <a class='submenu-item-link' href='?miasto=Siedlce'>Siedlce</a>
+          <a class='submenu-item-link' href='?miasto=Sierpc'>Sierpc</a>
+          <a class='submenu-item-link' href='?miasto=Sochaczew'>Sochaczew</a>
+          <a class='submenu-item-link' href='?miasto=Sokołów Podlaski'>Sokołów Podlaski</a>
+          <a class='submenu-item-link' href='?miasto=Warszawa'>Warszawa</a>
+          <a class='submenu-item-link' href='?miasto=Węgrów'>Węgrów</a>
+          <a class='submenu-item-link' href='?miasto=Wołomin'>Wołomin</a>
+          <a class='submenu-item-link' href='?miasto=Wyszków'>Wyszków</a>
+          <a class='submenu-item-link' href='?miasto=Żyrardów'>Żyrardów</a>
+        </div>
+        <a id='1.8' class='submenu-item' onmouseover='javascript:popup("1.8","left")'>opolskie</a>
+        <div id='s1.8' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Głubczyce'>Głubczyce</a>
+          <a class='submenu-item-link' href='?miasto=Nysa'>Nysa</a>
+          <a class='submenu-item-link' href='?miasto=Olesno'>Olesno</a>
+          <a class='submenu-item-link' href='?miasto=Opole'>Opole</a>
+          <a class='submenu-item-link' href='?miasto=Strzelce Opolskie'>Strzelce Opolskie</a>
+        </div>
+        <a id='1.9' class='submenu-item' onmouseover='javascript:popup("1.9","left")'>podkarpackie</a>
+        <div id='s1.9' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Brzozów'>Brzozów</a>
+          <a class='submenu-item-link' href='?miasto=Dębica'>Dębica</a>
+          <a class='submenu-item-link' href='?miasto=Jarosław'>Jarosław</a>
+          <a class='submenu-item-link' href='?miasto=Krosno'>Krosno</a>
+          <a class='submenu-item-link' href='?miasto=Leżajsk'>Leżajsk</a>
+          <a class='submenu-item-link' href='?miasto=Mielec'>Mielec</a>
+          <a class='submenu-item-link' href='?miasto=Przemyśl'>Przemyśl</a>
+          <a class='submenu-item-link' href='?miasto=Ropczyce'>Ropczyce</a>
+          <a class='submenu-item-link' href='?miasto=Rzeszów'>Rzeszów</a>
+          <a class='submenu-item-link' href='?miasto=Sanok'>Sanok</a>
+          <a class='submenu-item-link' href='?miasto=Tarnobrzeg'>Tarnobrzeg</a>
+        </div>
+        <a id='1.10' class='submenu-item' onmouseover='javascript:popup("1.10","left")'>podlaskie</a>
+        <div id='s1.10' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Białystok'>Białystok</a>
+          <a class='submenu-item-link' href='?miasto=Grajewo'>Grajewo</a>
+          <a class='submenu-item-link' href='?miasto=Łomża'>Łomża</a>
+          <a class='submenu-item-link' href='?miasto=Suwałki'>Suwałki</a>
+          <a class='submenu-item-link' href='?miasto=Wysokie Mazowieckie'>Wysokie Mazowieckie</a>
+          <a class='submenu-item-link' href='?miasto=Zambrów'>Zambrów</a>
+        </div>
+        <a id='1.11' class='submenu-item' onmouseover='javascript:popup("1.11","left")'>pomorskie</a>
+        <div id='s1.11' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Bytów'>Bytów</a>
+          <a class='submenu-item-link' href='?miasto=Chojnice'>Chojnice</a>
+          <a class='submenu-item-link' href='?miasto=Gdańsk'>Gdańsk</a>
+          <a class='submenu-item-link' href='?miasto=Gdynia'>Gdynia</a>
+          <a class='submenu-item-link' href='?miasto=Kartuzy'>Kartuzy</a>
+          <a class='submenu-item-link' href='?miasto=Lębork'>Lębork</a>
+          <a class='submenu-item-link' href='?miasto=Słupsk'>Słupsk</a>
+          <a class='submenu-item-link' href='?miasto=Starogard Gdański'>Starogard Gdański</a>
+          <a class='submenu-item-link' href='?miasto=Tczew'>Tczew</a>
+          <a class='submenu-item-link' href='?miasto=Wejherowo'>Wejherowo</a>
+        </div>
+        <a id='1.12' class='submenu-item' onmouseover='javascript:popup("1.12","left")'>śląskie</a>
+        <div id='s1.12' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Będzin'>Będzin</a>
+          <a class='submenu-item-link' href='?miasto=Bielsko-Biała'>Bielsko-Biała</a>
+          <a class='submenu-item-link' href='?miasto=Bytom'>Bytom</a>
+          <a class='submenu-item-link' href='?miasto=Chorzów'>Chorzów</a>
+          <a class='submenu-item-link' href='?miasto=Cieszyn'>Cieszyn</a>
+          <a class='submenu-item-link' href='?miasto=Częstochowa'>Częstochowa</a>
+          <a class='submenu-item-link' href='?miasto=Dąbrowa Górnicza'>Dąbrowa Górnicza</a>
+          <a class='submenu-item-link' href='?miasto=Gliwice'>Gliwice</a>
+          <a class='submenu-item-link' href='?miasto=Jastrzębie-Zdrój'>Jastrzębie-Zdrój</a>
+          <a class='submenu-item-link' href='?miasto=Jaworzno'>Jaworzno</a>
+          <a class='submenu-item-link' href='?miasto=Katowice'>Katowice</a>
+          <a class='submenu-item-link' href='?miasto=Lubliniec'>Lubliniec</a>
+          <a class='submenu-item-link' href='?miasto=Mikołów'>Mikołów</a>
+          <a class='submenu-item-link' href='?miasto=Mysłowice'>Mysłowice</a>
+          <a class='submenu-item-link' href='?miasto=Myszków'>Myszków</a>
+          <a class='submenu-item-link' href='?miasto=Pszczyna'>Pszczyna</a>
+          <a class='submenu-item-link' href='?miasto=Racibórz'>Racibórz</a>
+          <a class='submenu-item-link' href='?miasto=Ruda Śląska'>Ruda Śląska</a>
+          <a class='submenu-item-link' href='?miasto=Rybnik'>Rybnik</a>
+          <a class='submenu-item-link' href='?miasto=Siemianowice Śląskie'>Siemianowice Śląskie</a>
+          <a class='submenu-item-link' href='?miasto=Sosnowiec'>Sosnowiec</a>
+          <a class='submenu-item-link' href='?miasto=Tarnowskie Góry'>Tarnowskie Góry</a>
+          <a class='submenu-item-link' href='?miasto=Tychy'>Tychy</a>
+          <a class='submenu-item-link' href='?miasto=Wodzisław Śląski'>Wodzisław Śląski</a>
+          <a class='submenu-item-link' href='?miasto=Zabrze'>Zabrze</a>
+          <a class='submenu-item-link' href='?miasto=Zawiercie'>Zawiercie</a>
+          <a class='submenu-item-link' href='?miasto=Żywiec'>Żywiec</a>
+        </div>
+        <a id='1.13' class='submenu-item' onmouseover='javascript:popup("1.13","left")'>świętokrzyskie</a>
+        <div id='s1.13' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Busko-Zdrój'>Busko-Zdrój</a>
+          <a class='submenu-item-link' href='?miasto=Kielce'>Kielce</a>
+          <a class='submenu-item-link' href='?miasto=Końskie'>Końskie</a>
+          <a class='submenu-item-link' href='?miasto=Opatów'>Opatów</a>
+          <a class='submenu-item-link' href='?miasto=Ostrowiec Świetokrzyski'>Ostrowiec Świetokrzyski</a>
+          <a class='submenu-item-link' href='?miasto=Sandomierz'>Sandomierz</a>
+          <a class='submenu-item-link' href='?miasto=Starachowice'>Starachowice</a>
+          <a class='submenu-item-link' href='?miasto=Staszów'>Staszów</a>
+        </div>
+        <a id='1.14' class='submenu-item' onmouseover='javascript:popup("1.14","left")'>warmińsko-mazurskie</a>
+        <div id='s1.14' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Bartoszyce'>Bartoszyce</a>
+          <a class='submenu-item-link' href='?miasto=Braniewo'>Braniewo</a>
+          <a class='submenu-item-link' href='?miasto=Działdowo'>Działdowo</a>
+          <a class='submenu-item-link' href='?miasto=Elbląg'>Elbląg</a>
+          <a class='submenu-item-link' href='?miasto=Ełk'>Ełk</a>
+          <a class='submenu-item-link' href='?miasto=Iława'>Iława</a>
+          <a class='submenu-item-link' href='?miasto=Kętrzyn'>Kętrzyn</a>
+          <a class='submenu-item-link' href='?miasto=Lidzbark Warmiński'>Lidzbark Warmiński</a>
+          <a class='submenu-item-link' href='?miasto=Nidzica'>Nidzica</a>
+          <a class='submenu-item-link' href='?miasto=Nowe Miasto Lubawskie'>Nowe Miasto Lubawskie</a>
+          <a class='submenu-item-link' href='?miasto=Olecko'>Olecko</a>
+          <a class='submenu-item-link' href='?miasto=Olsztyn'>Olsztyn</a>
+          <a class='submenu-item-link' href='?miasto=Ostróda'>Ostróda</a>
+          <a class='submenu-item-link' href='?miasto=Pisz'>Pisz</a>
+          <a class='submenu-item-link' href='?miasto=Szczytno'>Szczytno</a>
+        </div>
+        <a id='1.15' class='submenu-item' onmouseover='javascript:popup("1.15","left")'>wielkopolskie</a>
+        <div id='s1.15' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Chodzież'>Chodzież</a>
+          <a class='submenu-item-link' href='?miasto=Gniezno'>Gniezno</a>
+          <a class='submenu-item-link' href='?miasto=Grodzisk Wielkopolski'>Grodzisk Wielkopolski</a>
+          <a class='submenu-item-link' href='?miasto=Jarocin'>Jarocin</a>
+          <a class='submenu-item-link' href='?miasto=Kalisz'>Kalisz</a>
+          <a class='submenu-item-link' href='?miasto=Kępno'>Kępno</a>
+          <a class='submenu-item-link' href='?miasto=Koło'>Koło</a>
+          <a class='submenu-item-link' href='?miasto=Konin'>Konin</a>
+          <a class='submenu-item-link' href='?miasto=Krotoszyn'>Krotoszyn</a>
+          <a class='submenu-item-link' href='?miasto=Leszno'>Leszno</a>
+          <a class='submenu-item-link' href='?miasto=Nowy Tomyśl'>Nowy Tomyśl</a>
+          <a class='submenu-item-link' href='?miasto=Oborniki'>Oborniki</a>
+          <a class='submenu-item-link' href='?miasto=Ostrów Wielkopolski'>Ostrów Wielkopolski</a>
+          <a class='submenu-item-link' href='?miasto=Piła'>Piła</a>
+          <a class='submenu-item-link' href='?miasto=Pleszew'>Pleszew</a>
+          <a class='submenu-item-link' href='?miasto=Poznań'>Poznań</a>
+          <a class='submenu-item-link' href='?miasto=Rawicz'>Rawicz</a>
+          <a class='submenu-item-link' href='?miasto=Szamotuły'>Szamotuły</a>
+          <a class='submenu-item-link' href='?miasto=Trzcianka'>Trzcianka</a>
+          <a class='submenu-item-link' href='?miasto=Wągrowiec'>Wągrowiec</a>
+          <a class='submenu-item-link' href='?miasto=Wolsztyn'>Wolsztyn</a>
+          <a class='submenu-item-link' href='?miasto=Września'>Września</a>
+          <a class='submenu-item-link' href='?miasto=Złotów'>Złotów</a>
+        </div>
+        <a id='1.16' class='submenu-item' onmouseover='javascript:popup("1.16","left")'>zachodniopomorskie</a>
+        <div id='s1.16' class='sub-menu'>
+          <a class='submenu-item-link' href='?miasto=Choszczno'>Choszczno</a>
+          <a class='submenu-item-link' href='?miasto=Drawsko Pomorskie'>Drawsko Pomorskie</a>
+          <a class='submenu-item-link' href='?miasto=Goleniów'>Goleniów</a>
+          <a class='submenu-item-link' href='?miasto=Gryfice'>Gryfice</a>
+          <a class='submenu-item-link' href='?miasto=Koszalin'>Koszalin</a>
+          <a class='submenu-item-link' href='?miasto=Łobez'>Łobez</a>
+          <a class='submenu-item-link' href='?miasto=Myślibórz'>Myślibórz</a>
+          <a class='submenu-item-link' href='?miasto=Stargard'>Stargard</a>
+          <a class='submenu-item-link' href='?miasto=Szczecin'>Szczecin</a>
+          <a class='submenu-item-link' href='?miasto=Wałcz'>Wałcz</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="content">
+  <a name="content"></a>
+  <h1>Sąd Rejonowy dla Warszawy-Śródmieścia w Warszawie</h1><remark>wynik wyszukiwania</remark><table id='active'><tr><th >Nazwisko</th><th>Imiona</th><th>Stanowisko</th></tr><tr title='Zobacz szczegóły nominacji' onclick="location='?id=685'"><td>ADASZKIEWICZ</td><td>Kamila Daria</td><td>asesor</td></tr><tr title='Zobacz szczegóły nominacji' onclick="location='?id=1245'"><td>BALCEREK</td><td>Bartłomiej</td><td>asesor</td></tr><tr title='Zobacz szczegóły nominacji' onclick="location='?id=2137'"><td>CHABUDA</td><td>Ewelina</td><td>sędzia</td></tr></table><div id="suplement">
+  <a title='Sprawdź, co możesz zrobić' href='?view=co_robic'>Znalazłeś/aś osobę, która rozstrzyga Twoją sprawę? Sprawdź, co możesz zrobić, aby uniknąć komplikacji prawnych</a>
+</div>
+</div>
+<!--div id="suplement">
+  <a href='?view=co_robic'>Sprawdź, co możesz zrobić</a>, jeśli do osądzenia Twojej sprawy została wyznaczona osoba, której nazwisko znajduje się w wyszukiwarce?
+</div-->
+<div id="bottom-menu">
+  <!--        <a title="Start" href="#top"><i class="fa fa-home"></i></a>-->
+  <a title="Wyszukiwanie" href="javascript:goToSearch()"><i class="fa fa-search"></i></a>
+  <a title="Informacja" href="?view=informacja">Informacja</a>
+  <a title="Co robić...?" href="?view=co_robic">Co&nbsp;Robić...?</a>
+  <a title="Podstawy prawne" href="?view=podstawy_prawne">Podstawy&nbsp;prawne</a>
+  <a title="Pomóż w akcji" href="?view=pomoc">Pomóż&nbsp;w&nbsp;akcji</a>
+  <a title="Wsparcie" href="?view=wsparcie">Wsparcie</a>
+  <a title="Kontakt" href="?view=kontakt">Kontakt</a>
+</div>
+<div id="footer">
+  <div id="kod">
+    <a title="Odwiedź naszą stronę www" href='https://ruchkod.pl'><i class="fa fa-globe"></i>  www.ruchkod.pl </a>
+    <br>
+    <a title="Odwiedź nasz fanpage na Facebooku" href='https://facebook.com/KomitetObronyDemokracji'><i class="fa fa-facebook"></i> @KomitetObronyDemokracji</a>
+    <br>
+    <a title="Śledź nas na Twitterze" href='https://twitter.com/Kom_Obr_Dem'><i class="fa fa-twitter"></i> @Kom_Obr_Dem</a>
+  </div>
+  <div id="fo">
+    <b>Projekt współfinansowany przez</b>
+    <br>
+    <a href="https://www.funduszobywatelski.pl/" target="_blank" title="Fundusz Obywatelski im. Henryka Wujca">
+      <img src="/neokrs/img/FOpoziomCMYK.svg" width="250px">
+    </a>
+  </div>
+</div>
+<div id="copyright">
+  <center>&copy; Komitet Obrony Demokracji</center>
+</div>
+</div>
+</body>
+</html>
+<script>
+  setTimeout(function(){
+    location="#content";
+  }, 500);
+</script>
+<script>
+  function checkSize(){
+    if(window.innerWidth<1000){
+      document.getElementById("menu").style.visibility="hidden";
+      document.body.addEventListener('click', function(e){
+        close_menu();
+      });
+    }
+    else
+      document.getElementById("menu").style.visibility="visible";
+  }
+
+  checkSize();
+
+  window.onresize = checkSize;
+
+  function switch_menu(){
+    var menu = document.getElementById('menu');
+
+    if(!menu.style.visibility || menu.style.visibility == "hidden")
+      menu.style.visibility = "visible";
+    else
+      menu.style.visibility = "hidden";
+
+  }
+
+  function open_menu(){
+    var menu = document.getElementById('menu');
+    menu.style.visibility = "visible";
+  }
+
+  function close_menu(){
+    var menu = document.getElementById('menu');
+    menu.style.visibility = "hidden";
+  }
+
+  bars.onclick = function (e) {
+    e = e || window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation)
+      e.stopPropagation();
+  }
+
+  menu.onclick = function (e) {
+    e = e || window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation)
+      e.stopPropagation();
+  }
+
+  var menu_button = document.getElementById("1");
+  // menu_button.onclick = killChildren;
+  menu_button.onclick = function (e) {
+    e = e || window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation)
+      e.stopPropagation();
+  }
+
+  function goToSearch(){
+    location="#top";
+    document.getElementById("search_input").focus();
+    document.getElementById("menu").style.visibility="hidden";
+  }
+
+</script>
