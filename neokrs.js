@@ -1,7 +1,5 @@
 console.log('Executing NeoKRS extension');
 
-document.body.style.border = "5px solid red";
-
 let currentLocation = window.location.toString();
 
 async function checkLocationChange() {
