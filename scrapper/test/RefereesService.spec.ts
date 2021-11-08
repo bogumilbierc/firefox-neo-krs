@@ -34,6 +34,8 @@ describe('RefereesService', () => {
     }
     nock('https://ruchkod.pl')
     .get('/neokrs/?sad=S%C4%85d%20Rejonowy%20dla%20Warszawy-%C5%9Ar%C3%B3dmie%C5%9Bcia%20w%20Warszawie')
+    .reply(400)
+    .get('/neokrs/?sad=S%C4%85d%20Rejonowy%20dla%20Warszawy-%C5%9Ar%C3%B3dmie%C5%9Bcia%20w%20Warszawie')
     .reply(200, getFileContent('referees-rejonowy-warszawa-srodmiescie.html'))
 
     //when

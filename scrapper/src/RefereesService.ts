@@ -8,8 +8,19 @@ import { HTMLElement, parse } from 'node-html-parser';
 export class RefereesService {
 
   async getReferees(court: Court): Promise<Referee[]> {
+    console.log(`Getting referees for Court: ${JSON.stringify(court)}`);
 
-    const courtRefereesWebsite = await axios.get(court.url);
+    const courtRefereesWebsite = await axios.request({
+      url: court.url,
+      timeout: 5000
+    })
+    .catch((error) => {
+      console.error('Error while trying to get data, retrying', error);
+      return axios.request({
+        url: court.url,
+        timeout: 5000
+      })
+    });
 
     const root = parse(courtRefereesWebsite.data)
 
@@ -31,7 +42,10 @@ export class RefereesService {
       return referee;
     });
 
-    return nullableReferees.filter((referee: Referee | null) => !!referee) as Referee[];
+    const validReferees: Referee[] = nullableReferees.filter((referee: Referee | null) => !!referee) as Referee[];
+
+    console.log(`Got ${validReferees.length} referees for ${court.name}`);
+    return validReferees;
   }
 
 }

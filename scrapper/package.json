@@ -4,7 +4,8 @@
   "description": "Utility to scrap neoKRS list from KOD website",
   "main": "fetch-all-referees.js",
   "scripts": {
-    "start": "./build/fetch-all-referees.js",
+    "prestart": "npm run build",
+    "start": "node ./build/fetch-all-referees.js",
     "test": "jest",
     "build": "tsc --project ./"
   },

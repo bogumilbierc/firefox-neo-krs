@@ -3,6 +3,8 @@ import { CourtsService } from './src/CourtsService';
 import { City } from './src/model/city.model';
 import { Court } from './src/model/court.model';
 import { RefereesService } from './src/RefereesService';
+import * as fs from 'fs';
+import path from 'path';
 
 
 const kodWebsiteUrl = 'https://ruchkod.pl/neokrs/'
@@ -20,6 +22,9 @@ async function scrapRefereesData() {
   const referees = await getReferees(courts);
   console.log('REFEREES:');
   console.log(referees);
+
+  console.log('Storing JSON file with referees data');
+  fs.writeFileSync(path.join(__dirname, 'referees.json'), JSON.stringify(referees))
 }
 
 /**
@@ -33,8 +38,7 @@ async function getCourts(cities: City[]): Promise<Court[]> {
   const courts = []
 
   for (const city of cities) {
-    const courtsForCity = await new CourtsService().getCourtsForCity(city,
-        kodWebsiteUrl);
+    const courtsForCity = await new CourtsService().getCourtsForCity(city, kodWebsiteUrl);
     courts.push(...courtsForCity)
   }
 
