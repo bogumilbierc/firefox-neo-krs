@@ -46,17 +46,23 @@ describe('RefereesService', () => {
       {
         name: 'Kamila Daria',
         position: 'asesor',
-        surname: 'ADASZKIEWICZ'
+        surname: 'ADASZKIEWICZ',
+        court,
+        url: 'https://ruchkod.pl/neokrs/?id=685'
       },
       {
         name: 'Bartłomiej',
         position: 'asesor',
-        surname: 'BALCEREK'
+        surname: 'BALCEREK',
+        court,
+        url: 'https://ruchkod.pl/neokrs/?id=1245'
       },
       {
         name: 'Ewelina',
         position: 'sędzia',
-        surname: 'CHABUDA'
+        surname: 'CHABUDA',
+        court,
+        url: 'https://ruchkod.pl/neokrs/?id=2137'
       }
     ]
     expect(referees).toEqual(expected);

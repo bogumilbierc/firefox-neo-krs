@@ -24,7 +24,7 @@ describe('CourtsService', () => {
 
 
     //when
-    const courts = await service.getCourtsForCity(city, 'https://ruchkod.pl/neokrs/');
+    const courts = await service.getCourtsForCity(city);
 
     //then
     const expected: Court[] = [

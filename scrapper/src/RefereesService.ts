@@ -4,6 +4,7 @@ import { Court } from './model/court.model';
 import { Referee } from './model/referee.model';
 import axios from 'axios';
 import { HTMLElement, parse } from 'node-html-parser';
+import { Globals } from './Globals';
 
 export class RefereesService {
 
@@ -30,14 +31,18 @@ export class RefereesService {
       const surname = possibleReferee?.childNodes?.[0]?.textContent;
       const name = possibleReferee?.childNodes?.[1]?.textContent;
       const position = possibleReferee?.childNodes?.[2]?.textContent;
+      const refereeLocation = possibleReferee.getAttribute('onclick')?.replace('location=\'', '')?.replace('\'', '');
 
-      if (!surname || !name || !position) {
+      if (!surname || !name || !position || !refereeLocation) {
         return null;
       }
+      const url = `${Globals.KOD_WEBSITE_URL}${refereeLocation}`
       const referee: Referee = {
         surname,
         name,
-        position
+        position,
+        url,
+        court
       };
       return referee;
     });

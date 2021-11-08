@@ -1,14 +1,15 @@
 'use strict';
 
 import { City } from './model/city.model';
+import { Globals } from './Globals';
 
 const {parse} = require('node-html-parser');
 const axios = require('axios');
 
 export class CitiesService {
 
-  async getCitiesList(websiteBaseUrl: string): Promise<City[]> {
-    const neoKrsWebsite = await axios.get(websiteBaseUrl);
+  async getCitiesList(): Promise<City[]> {
+    const neoKrsWebsite = await axios.get(Globals.KOD_WEBSITE_URL);
 
     const root = parse(neoKrsWebsite.data)
     const possibleCitiesElements: HTMLAnchorElement[] = root.querySelectorAll('a.submenu-item-link');
@@ -20,7 +21,7 @@ export class CitiesService {
       }
       const cityValue = cityHref.split('=')[1]
       return {
-        url: `${websiteBaseUrl}?miasto=${encodeURIComponent(cityValue)}`,
+        url: `${Globals.KOD_WEBSITE_URL}?miasto=${encodeURIComponent(cityValue)}`,
         name: possibleCity.text
       } as City;
     })

@@ -13,7 +13,7 @@ async function scrapRefereesData() {
 
   const citiesService = new CitiesService();
 
-  const cities = await citiesService.getCitiesList(kodWebsiteUrl)
+  const cities = await citiesService.getCitiesList()
   console.log('CITIES::')
   console.log(cities);
   const courts = await getCourts(cities);
@@ -24,7 +24,7 @@ async function scrapRefereesData() {
   console.log(referees);
 
   console.log('Storing JSON file with referees data');
-  fs.writeFileSync(path.join(__dirname, 'referees.json'), JSON.stringify(referees))
+  fs.writeFileSync(path.join(__dirname, '..', '..', 'neo-krs-referees.json'), JSON.stringify(referees))
 }
 
 /**
@@ -38,7 +38,7 @@ async function getCourts(cities: City[]): Promise<Court[]> {
   const courts = []
 
   for (const city of cities) {
-    const courtsForCity = await new CourtsService().getCourtsForCity(city, kodWebsiteUrl);
+    const courtsForCity = await new CourtsService().getCourtsForCity(city);
     courts.push(...courtsForCity)
   }
 
