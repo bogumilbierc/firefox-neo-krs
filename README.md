@@ -16,5 +16,6 @@ It uses static list of referees web scrapped from KDD website, so it needs some 
 ```bash
 cd scrapper
 nvm use
-node fetch-all-referees.js
+npm ci
+npm run start
 ```
