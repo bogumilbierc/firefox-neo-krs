@@ -27,8 +27,8 @@ async function neoKrs() {
   const refereeName = currentRefereeElement.textContent;
   console.log(`Current referee: ${refereeName}`)
   markRefereeAsInProcessing(currentRefereeElement, refereeName);
-  const isOnKrsList = await checkIfRefereeIsInNeoKrs(refereeName);
-
+  const matchingReferees = await getMatchingNeoKrsReferee(refereeName);
+  markRefereeAsProcessed(currentRefereeElement, matchingReferees, refereeName)
 }
 
 /**
@@ -48,7 +48,7 @@ function isOnCaseDetailsPage() {
  */
 function getRefereeElementFromCurrentCase() {
   const lawsuitMainDataElements = document.querySelectorAll(
-      '.row.lawsuit-main-data.submain');
+    '.row.lawsuit-main-data.submain');
 
   for (const lawsuitElement of lawsuitMainDataElements) {
     if (isARefereeRow(lawsuitElement)) {
@@ -105,23 +105,78 @@ function markRefereeAsInProcessing(refereeElement, refereeName) {
 }
 
 /**
- * Checks if passed referee is on list of NeoKRS refeerees
+ * Martks referee HTML element as processed
+ * @param {HTMLElement} refereeElement
+ * @param {Referee[]} matchedReferees
  * @param {string} refereeName
- * @returns {Promise<boolean>}
  */
-async function checkIfRefereeIsInNeoKrs(refereeName) {
+function markRefereeAsProcessed(refereeElement, matchedReferees, refereeName) {
+  if (!matchedReferees.length) {
+    refereeElement.textContent = `${refereeName} --- Brak w bazie NeoKRS`
+    return;
+  }
+  refereeElement.textContent = `${refereeName} --- Dopasowania: ${JSON.stringify(matchedReferees)}`;
+  refereeElement.style.color = 'red';
+}
 
-  const url = 'https://edustaz.pl/api/anonymous/landing-page/offers';
+/**
+ *
+ * @param {string} refereeName
+ * @returns {Promise<Referee[]>}
+ */
+async function getMatchingNeoKrsReferee(refereeName) {
+  const neoKrsReferees = await getRefereesData();
 
-  // const data = new FormData();
-  // data.append('nazwisko', refereeName);
+  const surname = getSurname(refereeName).toLowerCase();
+  const name = getName(refereeName).toLowerCase()
 
-  return fetch(url, {
-    method: 'get',
-    // body: data,
-    mode: 'cors'
-  });
+  const refereesMatchingBySurname = neoKrsReferees
+  .filter((referee) => referee.surname.toLowerCase() === surname)
 
+  if (!refereesMatchingBySurname.length) {
+    console.log('No matching referees by surname')
+    return [];
+  }
+
+  const matchingByFirstname = refereesMatchingBySurname.filter((referee) => referee.name.toLowerCase().includes(name))
+  console.log('Referees mathcing by firstname');
+  console.log(matchingByFirstname)
+
+  return Promise.resolve(matchingByFirstname);
+}
+
+function getSurname(refereeFullName) {
+  const split = refereeFullName.split(' ');
+  return split[split.length - 1];
+}
+
+function getName(refereeFullName) {
+  const split = refereeFullName.split(' ');
+  if (split.length === 2) {
+    return split[0]
+  }
+  return split[1]
+}
+
+/**
+ * @typedef {object} Referee
+ * @property {string} name
+ * @property {string} surname
+ */
+
+/**
+ *
+ * @returns {Promise<Referee[]>}
+ */
+async function getRefereesData() {
+  const refereesDataUrl = browser.runtime.getURL("neo-krs-referees.json");
+  console.log('Referees list url')
+  console.log(refereesDataUrl)
+  const refereesData = await fetch(refereesDataUrl);
+  const jsonData = await refereesData.json();
+  console.log('Referees json data')
+  console.log(jsonData)
+  return jsonData;
 }
 
 if (isOnCaseDetailsPage()) {

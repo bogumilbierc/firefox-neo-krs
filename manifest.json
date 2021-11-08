@@ -15,5 +15,6 @@
         "neokrs.js"
       ]
     }
-  ]
+  ],
+  "web_accessible_resources": ["neo-krs-referees.json"]
 }
