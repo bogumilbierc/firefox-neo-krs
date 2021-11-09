@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "NeoKRS",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Sprawdza czy sędzie znajduje się na liście sędziów neoKRS.",
   "icons": {
     "48": "icons/krs-48.png"
