@@ -12,9 +12,17 @@
         "*://*.sa.gov.pl/*"
       ],
       "js": [
-        "neokrs.js"
+        "scripts/utils.js",
+        "scripts/referee-store.js",
+        "scripts/referee-matcher.js",
+        "scripts/common-processor.js",
+        "scripts/lawsuit-details-processor.js",
+        "scripts/lawsuit-list-processor.js",
+        "scripts/neokrs.js"
       ]
     }
   ],
-  "web_accessible_resources": ["neo-krs-referees.json"]
+  "web_accessible_resources": [
+    "neo-krs-referees.json"
+  ]
 }
